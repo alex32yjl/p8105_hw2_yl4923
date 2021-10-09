@@ -66,3 +66,13 @@ pols_snp_unemploy = left_join(pols_df, snp_df, by = c("year", "month")) %>%
 ```
 The _pols_data_ has `r nrow(pols_df)` observations and `r ncol(pols_df)` variables, describing the party of president, numbers of government officials in a given year. The _snp_data_ contains `r nrow(snp_df)` observations and `r ncol(snp_df)` variables, showing the closing price of S&P overtime. The _unemployment data_ with `r nrow(unemp_df)` observations and `r ncol(unemp_df)` variables gives the percentage of unemployment in certain month and year. The joint of all three data sets by *year* and *month* has `r nrow(pols_snp_unemploy)` rows and `r ncol(pols_snp_unemploy)` columns from `r pull(pols_snp_unemploy, year)[1]` to `r rev(pull(pols_snp_unemploy, year))[1]`. We then can examine the politics, S&P stock market and unemployment altogether in a specific month and year.
 
+### Problem 3 
+3.1 Tidy the dataset
+```{r tidy baby names data}
+babyname_df = read_csv("data/Popular_Baby_Names.csv") %>%
+  janitor::clean_names() %>%
+  mutate(gender = str_to_lower(gender), ethnicity = str_to_lower(ethnicity), ethnicity = replace(ethnicity, ethnicity == "asian and paci", "asian and pacific islander"),
+    ethnicity = replace(ethnicity, ethnicity == "black non hisp", "black non hispanic"),
+    ethnicity = replace(ethnicity, ethnicity == "white non hisp", "white non hispanic")) %>% 
+  distinct()
+```
