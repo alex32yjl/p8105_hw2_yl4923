@@ -90,3 +90,14 @@ filter(babyname_df, gender == "male", rank == "1") %>%
   pivot_wider(names_from = "year_of_birth", values_from = "childs_first_name") %>%
   knitr::kable(format = "html", caption = "Most popular male children name over time")
 ```
+
+3.3 Scatter plot
+```{r scatter plots}
+scatterplot_df = filter(babyname_df, year_of_birth == "2016", gender == "male", ethnicity == "white non hispanic") %>% 
+  select(rank, count)
+
+ggplot(scatterplot_df, aes(x = rank, y = count)) + 
+  geom_point() +
+  labs(title = "Male White Non-hispanic Children", x = "Rank in popularity of the name", y = "Number of children with the name")
+```
+
