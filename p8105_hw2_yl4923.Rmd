@@ -37,3 +37,30 @@ Trash Wheel data shows the types of trash and their corresponding amounts collec
 
 For precipitation data from 2019 and 2018,we are able to identify the original source of the data by creating _year_ as a new variable.The precipitation data has `r nrow(precip_df)` rows and `r ncol(precip_df)` columns. The total precipitation in 2018 can be derived *`r sum(pull(filter(precip_df, year == 2018)))`*.
 
+### Problem 2
+2.1 Make 3 datasets jointable
+```{r clean 3 datasets}
+party = c("dem", "gop", "gop") 
+pols_df = read_csv("data/fivethirtyeight_datasets/pols-month.csv") %>%
+  janitor::clean_names() %>%
+  separate(mon, into = c("year","month","day")) %>%
+  mutate(month = month.name[as.integer(month)], president = party[prez_gop + 1]) %>%
+  select(year,month,president,everything(),-day, -prez_dem, -prez_gop)
+
+snp_df = read_csv("data/fivethirtyeight_datasets/snp.csv") %>% 
+  janitor::clean_names() %>%
+  separate(date, into = c("month","day","year")) %>%
+  mutate(month = month.name[as.integer(month)]) %>%
+  select(year,month,close,-day)
+
+unemp_df = read_csv("data/fivethirtyeight_datasets/unemployment.csv") %>%
+  pivot_longer(Jan:Dec, names_to = "month", values_to = "unemploy_percentage") %>%
+  mutate(Year = as.character(Year)) %>%
+  select(year = Year,month,unemploy_percentage)
+```
+
+2.2 Merging _snp_ into _pols_, and merging _unemployment_ into the result.
+```{r Join 3 datasets}
+pols_snp_unemploy = left_join(pols_df, snp_df, by = c("year", "month")) %>% 
+  left_join(unemp_df, by = c("year", "month"))
+```
