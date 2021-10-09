@@ -17,3 +17,19 @@ trash_wheel = read_excel("data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", she
   mutate(sports_balls = trunc(sports_balls))
 ```
 
+1.2 Clean and joint precipitation datasets
+```{r binding precipitation}
+precip_2018 = read_excel("data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx",sheet = "2018 Precipitation",range = "A2:B14") %>%
+  mutate(year = "2018") %>% 
+  janitor::clean_names() %>%
+  drop_na(total) 
+
+precip_2019 = read_excel("data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx",sheet = "2019 Precipitation",range = "A2:B14") %>%
+  mutate(year = "2019") %>% 
+  janitor::clean_names() %>%
+  drop_na(total) 
+   
+precip_df = bind_rows(precip_2019, precip_2018) %>%
+  mutate(month = month.name[month]) %>%
+  select(year,month,total)
+```
