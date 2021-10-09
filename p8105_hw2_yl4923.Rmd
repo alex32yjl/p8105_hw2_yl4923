@@ -33,3 +33,7 @@ precip_df = bind_rows(precip_2019, precip_2018) %>%
   mutate(month = month.name[month]) %>%
   select(year,month,total)
 ```
+Trash Wheel data shows the types of trash and their corresponding amounts collected by dumpsters from _2014_ to _2020_, including `r nrow(trash_wheel)` observations. Such as for one of the trashes, sports balls, the median of it in tons collected in 2019 is *`r median(pull(filter(trash_wheel, year == 2019),sports_balls))`*. Over years, Mr. Trash Wheel collects *`r sum(trash_wheel$weight_tons)`* tons of trash.
+
+For precipitation data from 2019 and 2018,we are able to identify the original source of the data by creating _year_ as a new variable.The precipitation data has `r nrow(precip_df)` rows and `r ncol(precip_df)` columns. The total precipitation in 2018 can be derived *`r sum(pull(filter(precip_df, year == 2018)))`*.
+
