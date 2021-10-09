@@ -59,7 +59,7 @@ unemp_df = read_csv("data/fivethirtyeight_datasets/unemployment.csv") %>%
   select(year = Year,month,unemploy_percentage)
 ```
 
-2.2 Merging _snp_ into _pols_, and merging _unemployment_ into the result.
+2.2 Merge _snp_ into _pols_, and merging _unemployment_ into the result.
 ```{r Join 3 datasets}
 pols_snp_unemploy = left_join(pols_df, snp_df, by = c("year", "month")) %>% 
   left_join(unemp_df, by = c("year", "month"))
