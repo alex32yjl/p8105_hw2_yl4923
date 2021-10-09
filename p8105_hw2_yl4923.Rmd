@@ -76,3 +76,17 @@ babyname_df = read_csv("data/Popular_Baby_Names.csv") %>%
     ethnicity = replace(ethnicity, ethnicity == "white non hisp", "white non hispanic")) %>% 
   distinct()
 ```
+
+3.2 Popular name tables
+```{r Olivia and male name table}
+filter(babyname_df, gender == "female", childs_first_name == "Olivia") %>% 
+  select(year_of_birth, ethnicity, rank) %>%
+  pivot_wider(names_from = "year_of_birth", values_from = "rank") %>%
+  knitr::kable(format = "html", caption = "Popularity rank of “Olivia” as a female baby name over time")
+
+
+filter(babyname_df, gender == "male", rank == "1") %>% 
+  select(year_of_birth, ethnicity, childs_first_name) %>% 
+  pivot_wider(names_from = "year_of_birth", values_from = "childs_first_name") %>%
+  knitr::kable(format = "html", caption = "Most popular male children name over time")
+```
